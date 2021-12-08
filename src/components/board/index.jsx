@@ -10,6 +10,9 @@ export default function Board (){
   const onSquareClick = useCallback(
     (index) => {
       const newSquares = squares.slice();
+      if (calculateWinner(newSquares) || newSquares[index]) {
+        return;
+      }
       newSquares[index] = nextPlayer ? 'X' : 'O';
       setSquares(newSquares);
       setPlayer(!nextPlayer);
