@@ -1,20 +1,31 @@
 import { useCallback, useState } from "react";
 import BoardRow from "../board-row";
+import calculateWinner from "../winner-calculate";
 
 
 export default function Board (){
 
   const [squares, setSquares] = useState(Array(9).fill(null));
+  const [nextPlayer, setPlayer] = useState(true);
   const onSquareClick = useCallback(
     (index) => {
       const newSquares = squares.slice();
-      newSquares[index] = 'X';
+      newSquares[index] = nextPlayer ? 'X' : 'O';
       setSquares(newSquares);
+      setPlayer(!nextPlayer);
     },
-    [squares],
+    [squares, nextPlayer],
   );
 
-  const status = 'Next player: X';
+  const winner = calculateWinner(squares);
+  let status;
+  
+  if(winner){
+    status = 'Winner is ' + winner; 
+  }
+  else{
+    status = 'Next player: ' + (nextPlayer ? 'X' : 'O');
+  }
 
   return (
     <div>
@@ -25,3 +36,5 @@ export default function Board (){
     </div>
   );
 }
+
+
